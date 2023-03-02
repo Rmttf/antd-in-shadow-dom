@@ -9,14 +9,29 @@ class CustomElement extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.root = document.createElement('div');
-        const style = document.createElement('style');
-        style.textContent = `
-            span {
-                color: red;
-            }
-        `;
+
+        // 样式注入方式1
+        // const style = document.createElement('style');
+        // style.textContent = `
+        //     span {
+        //         color: red;
+        //     }
+        // `;
+        // this.shadowRoot.appendChild(style);
+
+        // 样式注入方式2 可以采用
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        // 注意文件地址引用
+        link.setAttribute('href', 'custom-element.css');
+        this.shadowRoot.appendChild(link);
+
+        // 样式注入方式3
+        // const styleSheet = new CSSStyleSheet();
+        // styleSheet.replaceSync("span { color: red; }");
+        // this.shadowRoot.adoptedStyleSheets = [styleSheet];
+
         this.shadowRoot.appendChild(this.root);
-        this.shadowRoot.appendChild(style);
     }
 
     render() {
